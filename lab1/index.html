@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    
+    <title>Лабораторная работа 1 - Web-программирование</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../css/base.min.css" rel="stylesheet">
+    <link href="../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="..">Web-программирование</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Главная</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Лабораторные работы <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">Лабораторная работа 1</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="..">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="next" >
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#1">Лабораторная работа 1. Работа с сокетами.</a></li>
+            <li class="second-level"><a href="#1_1">Задание 1</a></li>
+                
+            <li class="second-level"><a href="#2">Задание 2</a></li>
+                
+            <li class="second-level"><a href="#3">Задание 3</a></li>
+                
+            <li class="second-level"><a href="#4">Задание 4</a></li>
+                
+            <li class="second-level"><a href="#5">Задание 5</a></li>
+                
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="1">Лабораторная работа 1. Работа с сокетами.</h1>
+<hr />
+<h2 id="1_1">Задание 1</h2>
+<p>Реализовать клиентскую и серверную часть приложения. Клиент отправляет серверу сообщение «Hello, server», и оно должно отобразиться на стороне сервера. В ответ сервер отправляет клиенту сообщение «Hello, client», которое должно отобразиться у клиента.</p>
+<p><strong>Требования:</strong>
+- Реализовать с помощью протокола UDP</p>
+<p><strong>Реализация</strong><br />
+Так как у нас протокол <strong>UPD</strong>, устанавливать предварительное соединение не нужно.  </p>
+<p><strong>Клиент:</strong></p>
+<pre><code class="language-python">import socket
+
+HOST = &quot;localhost&quot;
+PORT = 8080
+BUFFER_SIZE = 1024
+
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(&quot;Hello, server&quot;.encode(), (HOST, PORT))
+
+response, server_address = client.recvfrom(BUFFER_SIZE)
+decoded_data = response.decode()
+print(decoded_data)
+
+client.close()
+</code></pre>
+<p>HOST - адрес сервера<br />
+PORT - порт, который слушает сервер<br />
+BUFFER_SIZE - максимальное количество байт, которое мы читаем за раз  </p>
+<p>Так как протокол <strong>UDP</strong> не предоставляет гарантии доставки, предварительное соединение с сервером устанавливать не нужно. Мы просто создаем объект сокета (client), передавая ему в качестве аргументов <strong>AF_INET</strong> (означает, что мы используем в качестве сетевого протокола IPv4) и <strong>SOCK_DGRAM</strong> (означает, что мы используем в качестве транспортного протокола UDP). После этого мы отправляем серверу датаграмму с закодированным в <strong>UTF-8</strong> сообщением. Сервер отправляет ответное сообщение, которое мы читаем из нашего клиентского сокета с помощью метода <strong>.recvfrom</strong>, декодируем его и выводим на экран. В конце мы удаляем клиентский сокет с помощью метода <strong>.close</strong>.</p>
+<p><strong>Сервер:</strong></p>
+<pre><code class="language-python">import socket
+
+HOST = &quot;localhost&quot;
+PORT = 8080
+BUFFER_SIZE = 1024
+
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server.bind((HOST, PORT))
+print(&quot;Server is running&quot;)
+
+while True:
+    data, client_address = server.recvfrom(BUFFER_SIZE)
+    decoded_data = data.decode()
+    print(decoded_data)
+    server.sendto(&quot;Hello, client&quot;.encode(), client_address)
+    if decoded_data == &quot;stop_server&quot;:
+        break
+server.close()
+</code></pre>
+<p>HOST - адрес для прослушивания<br />
+PORT - порт для прослушивания<br />
+BUFFER_SIZE - максимальное количество байт, которое мы читаем за раз  </p>
+<hr />
+<h2 id="2">Задание 2</h2>
+<p>Реализовать клиентскую и серверную часть приложения. Клиент запрашивает выполнение математической операции, параметры которой вводятся с клавиатуры. Сервер обрабатывает данные и возвращает результат клиенту.</p>
+<p><strong>Требования:</strong>
+- Реализовать с помощью протокола TCP
+- Задача по варианту: Поиск площади трапеции</p>
+<p><strong>Реализация</strong><br />
+В данном задании мы используем <strong>TCP</strong>, а не UDP. Этот протокол предоставляет гарантии доставки сообщений. Перед отправкой сообщения, необходимо установить соединение с сервером с помощью метода <code>.connect()</code>.</p>
+<p><strong>Клиент:</strong></p>
+<pre><code class="language-python">import json
+import socket
+
+HOST = &quot;localhost&quot;
+PORT = 8080
+BUFFER_SIZE = 1024
+
+
+a, b, h = map(
+    lambda x: float(x.strip()),
+    input(&quot;Введите длины двух оснований трапеции и высоту. \nРазделяйте значения запятой.\n&quot;).strip().split(&quot;,&quot;),
+)
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect((HOST, PORT))
+client.send(json.dumps(dict(a=a, b=b, h=h)).encode())
+
+response = client.recv(BUFFER_SIZE)
+area = float(response.decode())
+
+print(f&quot;Площадь = {area}&quot;)
+client.close()
+</code></pre>
+<p><strong>Сервер:</strong></p>
+<pre><code class="language-python">import json
+import socket
+
+HOST = &quot;localhost&quot;
+PORT = 8080
+BUFFER_SIZE = 1024
+MAX_CONNECTIONS = 10
+
+
+def calculate_area_trapezoid(a, b, h):
+    return (a + b) * h / 2
+
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((HOST, PORT))
+server.listen(MAX_CONNECTIONS)
+print(&quot;Server is running&quot;)
+
+while True:
+    client, _ = server.accept()
+    data = client.recv(BUFFER_SIZE)
+    if data == &quot;stop_server&quot;:
+        break
+    j = json.loads(data)
+    a, b, h = j[&quot;a&quot;], j[&quot;b&quot;], j[&quot;h&quot;]
+    area_trapezoid = calculate_area_trapezoid(a, b, h)
+    client.send(f&quot;{area_trapezoid}&quot;.encode())
+server.close()
+</code></pre>
+<hr />
+<h2 id="3">Задание 3</h2>
+<p>Реализовать серверную часть приложения. Клиент подключается к серверу, и в ответ получает HTTP-сообщение, содержащее HTML-страницу, которая сервер подгружает из файла <code>index.html</code>.</p>
+<p><strong>Реализация</strong><br />
+Необходимо реализовать протокол <strong>HTTP</strong>, который работает поверх транспортного протокола <strong>TCP</strong>. Для этого мы добавляем спец данные (заголовки). Нам нужно отправить строки <code>HTTP/1.1 200 OK</code> и <code>Content-Type: text/html</code>.</p>
+<p><strong>Сервер:</strong></p>
+<pre><code class="language-python">import os
+import socket
+
+HOST = &quot;localhost&quot;
+PORT = 8080
+MAX_CONNECTIONS = 10
+BUFFER_SIZE = 1024
+
+
+def load_html_file(filename):
+    if os.path.exists(filename):
+        with open(filename, 'r') as file:
+            return file.read()
+    else:
+        return None
+
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((HOST, PORT))
+server.listen(MAX_CONNECTIONS)
+print(&quot;Server is running&quot;)
+
+while True:
+    client, _ = server.accept()
+    client.recv(BUFFER_SIZE)
+
+    html = load_html_file(&quot;index.html&quot;)
+    if html is not None:
+        response = (
+            (
+                    &quot;HTTP/1.1 200 OK\r\n&quot;
+                    &quot;Content-Type: text/html; charset=utf-8\r\n&quot;
+                    f&quot;Content-Length: {len(html)}\r\n&quot;
+                    &quot;\r\n&quot;
+                    + html
+            )
+        )
+    else:
+        response = (
+            &quot;HTTP/1.1 404 Not Found\r\n&quot;
+            &quot;Content-Type: text/html; charset=utf-8\r\n&quot;
+            &quot;\r\n&quot;
+            &quot;&lt;h1&gt;404 Not Found&lt;/h1&gt;&quot;
+        )
+    client.sendall(response.encode())
+</code></pre>
+<hr />
+<h2 id="4">Задание 4</h2>
+<p>Реализовать многопользовательский чат.
+<strong>Требования:</strong>
+- Необходимо использовать библиотеку threading
+- Протокол TCP
+- Клиентские подключения и обработку сообщений от всех пользователей в потоках.</p>
+<p><strong>Реализация</strong><br />
+В данном задании был написан клиент, который умеет как отправлять, так и получать сообщения. Клиент должен выбрать никнейм и чат_айди перед тем, как ему будет позволено общаться с другими и читать их сообщения.</p>
+<p><strong>Клиент:</strong></p>
+<pre><code class="language-python">import socket
+import threading
+
+HOST = 'localhost'
+PORT = 8080
+BUFFER_SIZE = 4
+
+def receive_messages(client_socket):
+    while True:
+        try:
+            message_length_data = client_socket.recv(BUFFER_SIZE)
+            if not message_length_data:
+                continue
+            message_length = int.from_bytes(message_length_data, byteorder=&quot;big&quot;)
+            message = client_socket.recv(message_length).decode('utf-8')
+            if message:
+                print(f&quot;\n{message}&quot;)
+        except:
+            print(&quot;[-] Ошибка соединения с сервером.&quot;)
+            client_socket.close()
+            break
+
+
+username = input(&quot;Введите свой никнейм: &quot;)
+chat_id = input(&quot;Введите id чата: &quot;)
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((HOST, PORT))
+
+receive_thread = threading.Thread(target=receive_messages, args=(client_socket,))
+receive_thread.start()
+
+
+def send_message(client_socket, msg):
+    msg = msg.encode()
+    msg_length = len(msg).to_bytes(BUFFER_SIZE, byteorder='big')
+    client_socket.sendall(msg_length + msg)
+
+
+send_message(client_socket, f&quot;/setup_nickname {username}&quot;)
+send_message(client_socket, f&quot;/join_chat {chat_id}&quot;)
+
+while True:
+    try:
+        message = input()
+        if message.lower() == 'exit':
+            client_socket.close()
+            break
+        send_message(client_socket, message)
+    except KeyboardInterrupt:
+        client_socket.close()
+        break
+</code></pre>
+<p>Сервер умеет обрабатывать сообщения в многопользовательских чатах с функциями установки никнеймов и присоединения к определённым чатам по идентификаторам. 
+Клиенты могут отправлять команды для установки никнейма (<code>/setup_nickname</code>) и подключения к чату (<code>/join_chat</code>), а сервер транслирует их сообщения другим участникам того же чата. 
+Для обработки каждого клиента создается отдельный поток, что позволяет обработке соединений работать параллельно. 
+Сообщения передаются по протоколу <strong>TCP</strong>, а для их разделения используется механизм указания длины сообщения в заголовке каждого отправляемого пакета.</p>
+<p><strong>Сервер:</strong></p>
+<pre><code class="language-python">import socket
+import threading
+import typing as tp
+from dataclasses import dataclass
+
+HOST = &quot;localhost&quot;
+PORT = 8080
+BUFFER_SIZE = 4
+
+members = []
+
+
+@dataclass
+class ChatMember:
+    client_socket: socket
+    chat_id: str = None
+    username: str = None
+
+
+def handle_client(client_socket, client_address):
+    print(f&quot;[+] Новое подключение от {client_address}&quot;)
+    members.append(ChatMember(client_socket=client_socket))
+
+    while True:
+        try:
+            message_length_data = client_socket.recv(BUFFER_SIZE)
+            if not message_length_data:
+                continue
+            message_length = int.from_bytes(message_length_data, byteorder=&quot;big&quot;)
+            message = client_socket.recv(message_length).decode('utf-8')
+            if message:
+                member = find_chat_member(client_socket)
+                print(f&quot;[{client_address} :: {member.username}] {message}&quot;)
+
+                if message[:16] == &quot;/setup_nickname &quot;:
+                    if message[16:] == &quot;&quot;:
+                        send_message(client_socket, &quot;[SYSTEM] Ошибка: вы не можете установить пустой никнейм.&quot;)
+                        continue
+                    if message[-6:].lower() == &quot;system&quot; or message[-5:].lower() == &quot;(you)&quot; or message[-4:].lower() in [&quot;none&quot;, &quot;null&quot;]:
+                        send_message(client_socket, &quot;[SYSTEM] Ошибка: вы не можете установить этот никнейм.&quot;)
+                        continue
+                    old_username = member.username
+                    member.username = message[16:]
+                    if member.username == old_username:
+                        send_message(client_socket, &quot;[SYSTEM] У вас уже установлен этот никнейм.&quot;)
+                        continue
+                    if member.chat_id is not None:
+                        broadcast_message(f&quot;{old_username} сменил никнейм на {member.username}&quot;, member.chat_id, None, system_msg=True)
+                    continue
+                elif message[:11] == &quot;/join_chat &quot;:
+                    if member.username is None:
+                        send_message(client_socket, &quot;[SYSTEM] Чтобы присоединиться к чату, вам нужно установить никнейм. Введите /setup_nickname &lt;ваш никнейм&gt;&quot;)
+                        continue
+                    if message[11:] == &quot;&quot;:
+                        send_message(client_socket, &quot;[SYSTEM] Ошибка: вы не можете установить пустой айди чата.&quot;)
+                        continue
+                    old_chat_id = member.chat_id
+                    member.chat_id = message[11:]
+                    if member.chat_id == old_chat_id:
+                        send_message(client_socket, &quot;[SYSTEM] Вы уже в этом чате.&quot;)
+                        continue
+                    if old_chat_id is not None:
+                        broadcast_message(f&quot;{member.username} покинул чат.&quot;, old_chat_id, member.client_socket, system_msg=True)
+                    broadcast_message(f&quot;{member.username} зашёл в чат.&quot;, member.chat_id, None, system_msg=True)
+                    continue
+                if member.username is None:
+                    send_message(client_socket, &quot;[SYSTEM] Чтобы присоединиться к чату, вам нужно установить никнейм. Введите /setup_nickname &lt;ваш никнейм&gt;&quot;)
+                elif member.chat_id is None:
+                    send_message(client_socket, &quot;[SYSTEM] Вы не присоединились к чату. Введите /join_chat &lt;чат_айди&gt;&quot;)
+                else:
+                    broadcast_message(message, member.chat_id, client_socket)
+            else:
+                break
+        except ConnectionResetError:
+            break
+
+    print(f&quot;[-] Отключен {client_address}&quot;)
+    member = find_chat_member(client_socket)
+    if member.chat_id is not None:
+        target_chat_id = member.chat_id
+        members.remove(member)
+        broadcast_message(f&quot;{member.username} покинул чат.&quot;, target_chat_id, client_socket, system_msg=True)
+    remove_chat_member(client_socket)
+    client_socket.close()
+
+
+def find_chat_member(target_socket) -&gt; tp.Union[ChatMember, None]:
+    for member in members:
+        if member.client_socket == target_socket:
+            return member
+    return None
+
+def remove_chat_member(target_socket):
+    for member in members:
+        if member.client_socket == target_socket:
+            members.remove(member)
+            break
+
+
+def broadcast_message(message, chat_id, sender_socket, system_msg: bool = False):
+    sender = find_chat_member(sender_socket)
+    for member in members:
+        if member.chat_id == chat_id:
+            try:
+                full_message = (&quot;[SYSTEM]&quot; if system_msg else f&quot;[{sender.username}{' (You)' if member.client_socket == sender_socket else ''}]&quot;) + f&quot; {message}&quot;
+                send_message(member.client_socket, full_message)
+            except:
+                member.client_socket.close()
+                members.remove(member)
+                broadcast_message(f&quot;{member.username} покинул чат.&quot;, chat_id, client_socket, system_msg=True)
+
+
+def send_message(client_socket, message):
+    msg = message.encode('utf-8')
+    msg_length = len(msg).to_bytes(BUFFER_SIZE, byteorder='big')
+    client_socket.sendall(msg_length + msg)
+
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((HOST, PORT))
+server.listen()
+
+print(f&quot;[*] Сервер запущен на {HOST}:{PORT}&quot;)
+
+while True:
+    client_socket, client_address = server.accept()
+
+    client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
+    client_thread.start()
+</code></pre>
+<hr />
+<h2 id="5">Задание 5</h2>
+<p>Написать простой веб-сервер для обработки GET и POST HTTP-запросов с помощью библиотеки socket в Python.</p>
+<p><strong>Сервер должен:</strong>
+- Принять и записать информацию о дисциплине и оценке по дисциплине.
+- Отдать информацию обо всех оценках по дисциплинам в виде HTML-страницы.</p>
+<p><strong>Сервер:</strong></p>
+<pre><code class="language-python">import http.client
+import socket
+import sys
+from datetime import datetime
+from urllib.parse import unquote
+import threading
+import typing as tp
+
+HOST = &quot;localhost&quot;
+PORT = 8080
+
+
+class Logger:
+    def __init__(self, service: tp.Union[object, str] = None):
+        self.__red = &quot;\033[31m&quot;
+        self.__yellow = &quot;\033[33m&quot;
+        self.__green = &quot;\033[32m&quot;
+        self.__white = &quot;\033[37m&quot;
+        self.__reset = &quot;\033[0m&quot;
+        if service is None:
+            print(&quot;Логгер инициализирован без имени.&quot;)
+        if isinstance(service, object) and service is not None:
+            self.__service_name = service.__class__.__name__
+        elif isinstance(service, str):
+            self.__service_name = service
+        else:
+            self.__service_name = &quot;UnnamedService&quot;
+
+    def info(self, msg):
+        print(f&quot;[{self.__gettime()}] {self.__green}[INFO]{self.__reset} [{self.__service_name}]: {msg}&quot;)
+
+    def warn(self, msg):
+        print(f&quot;[{self.__gettime()}] {self.__yellow}[WARN]{self.__reset} [{self.__service_name}]: {msg}&quot;)
+
+    def error(self, msg):
+        print(f&quot;{self.__gettime()}] {self.__red}[ERROR]{self.__reset} [{self.__service_name}]: {msg}&quot;)
+
+    def __gettime(self):
+        return datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+
+
+grades_data = {}
+
+
+class MyHTTPServer:
+    def __init__(self, host, port):
+        self._host = host
+        self._port = port
+
+    def serve_forever(self):
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        try:
+            server.bind((self._host, self._port))
+            server.listen()
+            server.settimeout(1)
+            log.info(f&quot;Сервер запущен на адресе {self._host}:{self._port}&quot;)
+            while True:
+                try:
+                    conn, _ = server.accept()
+                    client_thread = threading.Thread(target=self.serve_client, args=(conn,), daemon=True)
+                    client_thread.start()
+                except socket.timeout:
+                    continue
+                except KeyboardInterrupt:
+                    break
+                except Exception as e:
+                    log.error(f&quot;Что-то пошло не так: {e}&quot;)
+        except KeyboardInterrupt:
+            log.warn(&quot;Обнаружен ввод Ctrl+C&quot;)
+        finally:
+            log.info(&quot;Сервер останавливается...&quot;)
+            server.close()
+
+    def serve_client(self, conn):
+        try:
+            req = self.parse_request(conn)
+            resp, status_code = self.handle_request(req)
+            self.send_response(conn, resp)
+            self.log_request(req, status_code, http.client.responses[status_code])
+        except ConnectionResetError:
+            conn = None
+        except Exception as e:
+            self.send_error(conn, e)
+        if conn:
+            conn.close()
+
+
+    def parse_request(self, conn):
+        rfile = conn.makefile('rb')
+
+        request_line = rfile.readline().decode('iso-8859-1').strip()
+        method, path, version = request_line.split()
+
+        headers = self.parse_headers(rfile)
+
+        content_length = int(headers.get('Content-Length', 0))
+        body = rfile.read(content_length).decode('iso-8859-1') if content_length else None
+
+        return {
+            'method': method,
+            'path': path,
+            'version': version,
+            'headers': headers,
+            'body': body
+        }
+
+    def parse_headers(self, rfile):
+        headers = {}
+        while True:
+            line = rfile.readline().decode('iso-8859-1').strip()
+            if not line:
+                break
+            header_name, header_value = line.split(&quot;:&quot;, 1)
+            headers[header_name.strip()] = header_value.strip()
+        return headers
+
+    def handle_request(self, req):
+        if req['method'] == 'GET' and req['path'] == '/grades':
+            return self.build_response(200, self.render_grades())
+        elif req['method'] == 'POST' and req['path'] == '/submit':
+            body = req['body']
+            if body:
+                params = dict(pair.split('=') for pair in body.split('&amp;'))
+                discipline = unquote(params.get('discipline', '')).strip()
+                grade = unquote(params.get('grade', '')).strip()
+
+                if discipline and grade:
+                    grades_data[discipline] = grade
+                    return self.build_response(200, self.render_submission_success())
+            return self.build_response(400, &quot;Invalid POST request&quot;)
+        else:
+            return self.build_response(404, &quot;Not Found&quot;)
+
+    def build_response(self, status_code, body):
+        response_line = f&quot;HTTP/1.1 {status_code} {http.client.responses[status_code]}\r\n&quot;
+        headers = &quot;Content-Type: text/html; charset=utf-8\r\n&quot;
+        headers += f&quot;Content-Length: {len(body.encode('utf-8'))}\r\n&quot;
+        headers += &quot;Connection: close\r\n&quot;
+        headers += &quot;\r\n&quot;
+        response = response_line + headers + body
+        return response, status_code
+
+    def send_response(self, conn, resp):
+        conn.sendall(resp.encode('utf-8'))
+
+    def send_error(self, conn, err):
+        resp, _ = self.build_response(500, f&quot;Error: {err}&quot;)
+        self.send_response(conn, resp)
+        conn.close()
+
+    def render_submission_success(self):
+        return &quot;&quot;&quot;
+        &lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;title&gt;Submission Success&lt;/title&gt;&lt;/head&gt;&lt;body&gt;
+        &lt;h2&gt;Data submitted successfully!&lt;/h2&gt;
+        &lt;button onclick=&quot;window.location.href='/grades'&quot;&gt;Return to Grades&lt;/button&gt;
+        &lt;/body&gt;&lt;/html&gt;
+        &quot;&quot;&quot;
+
+    def render_grades(self):
+        html = &quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;Зачётка&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot;
+        html += &quot;&lt;h1&gt;Зачётка&lt;/h1&gt;&quot;
+        if grades_data:
+            html += &quot;&lt;ul&gt;&quot;
+            for discipline, grade in grades_data.items():
+                html += f&quot;&lt;li&gt;{discipline}: {grade}&lt;/li&gt;&quot;
+            html += &quot;&lt;/ul&gt;&quot;
+        else:
+            html += &quot;В зачётке пусто. Почему бы это не исправить? ;)&quot;
+        html += &quot;&lt;h3&gt;Добавить запись:&lt;/h3&gt;&quot;
+        html += &quot;&quot;&quot;
+        &lt;form method=&quot;POST&quot; action=&quot;/submit&quot;&gt;
+            &lt;label for=&quot;discipline&quot;&gt;Дисциплина:&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;discipline&quot; name=&quot;discipline&quot;&gt;&lt;br&gt;
+            &lt;label for=&quot;grade&quot;&gt;Оценка:&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;grade&quot; name=&quot;grade&quot;&gt;&lt;br&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;Сохранить&quot;&gt;
+        &lt;/form&gt;
+        &quot;&quot;&quot;
+        html += &quot;&lt;/body&gt;&lt;/html&gt;&quot;
+        return html
+
+    def log_request(self, req, status_code, status_text):
+        log_message = (f&quot;Request: {req['method']} {req['path']} | &quot;
+                       f&quot;Response: {status_code} {status_text}&quot;)
+        log.info(log_message)
+
+
+if __name__ == '__main__':
+    host = sys.argv[1] if len(sys.argv) &gt; 2 else HOST
+    port = int(sys.argv[2]) if len(sys.argv) &gt; 2 else PORT
+
+    serv = MyHTTPServer(HOST, PORT)
+    log = Logger(serv)
+    serv.serve_forever()
+</code></pre></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = ".."</script>
+    
+    <script src="../js/base.js"></script>
+    <script src="../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>
