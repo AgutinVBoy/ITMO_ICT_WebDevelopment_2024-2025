@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    
+    <title>Лабораторная работа 2 - Web-программирование</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../css/base.min.css" rel="stylesheet">
+    <link href="../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="..">Web-программирование</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Главная</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Лабораторные работы <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../lab1/">Лабораторная работа 1</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Лабораторная работа 2</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../lab1/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="next" >
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#2-django-5">Лабораторная работа 2. Реализация простого сайта на django. Вариант 5 (Список научных конференций)</a></li>
+            <li class="second-level"><a href="#1">1. Регистрация</a></li>
+                
+            <li class="second-level"><a href="#2">2. Авторизация</a></li>
+                
+            <li class="second-level"><a href="#31">3.1. Просмотр всех конференций</a></li>
+                
+            <li class="second-level"><a href="#32">3.2. Просмотр конференции, редактирование, удаление</a></li>
+                
+            <li class="second-level"><a href="#4">4. Оставить отзыв на конференцию</a></li>
+                
+            <li class="second-level"><a href="#5">5. Администратор должен иметь возможность указания результатов выступления</a></li>
+                
+            <li class="second-level"><a href="#6">6. В клиентской части должна формироваться таблица, отображающая всех участников по конференциям</a></li>
+                
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="2-django-5">Лабораторная работа 2. Реализация простого сайта на django. Вариант 5 (Список научных конференций)</h1>
+<hr />
+<h2 id="1">1. Регистрация</h2>
+<pre><code class="language-python">def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('conference_list')
+    else:
+        form = UserCreationForm()
+    return render(request, 'authorization/register.html', {'form': form})
+</code></pre>
+<p>Шаблон</p>
+<pre><code class="language-html">{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Регистрация&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;{% static 'style.css' %}&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Регистрация&lt;/h1&gt;
+    &lt;/header&gt;
+
+    &lt;section&gt;
+        &lt;form method=&quot;post&quot;&gt;
+            {% csrf_token %}
+            {{ form.as_p }}
+            &lt;button type=&quot;submit&quot;&gt;Зарегистрироваться&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p class=&quot;center-text&quot;&gt;Уже зарегистрированы? &lt;a href=&quot;{% url 'login' %}&quot;&gt;Войти&lt;/a&gt;&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>В представлении <code>register</code> обрабатывается регистрация нового пользователя. Если метод запроса <code>POST</code>, форма <code>UserCreationForm</code> получает данные. При успешной валидации создается новый пользователь, сразу же выполняется вход, и происходит перенаправление на страницу со списком конференций. Если же метод запроса <code>GET</code>, просто отображается пустая форма регистрации.</p>
+<p>Шаблон отображает форму регистрации, кнопку «Зарегистрироваться» и ссылку для перехода на страницу входа, если пользователь уже зарегистрирован.</p>
+<h2 id="2">2. Авторизация</h2>
+<pre><code class="language-html">{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Вход&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;{% static 'style.css' %}&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Вход в систему&lt;/h1&gt;
+    &lt;/header&gt;
+
+    &lt;section&gt;
+        &lt;form method=&quot;post&quot;&gt;
+            {% if form.errors %}
+            &lt;div class=&quot;errorlist&quot;&gt;
+                &lt;li&gt;Неверный логин или пароль&lt;/li&gt;
+            &lt;/div&gt;
+        {% endif %}
+            {% csrf_token %}
+            &lt;label for=&quot;username&quot;&gt;Имя пользователя:&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+
+            &lt;label for=&quot;password&quot;&gt;Пароль:&lt;/label&gt;
+            &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+
+            &lt;button type=&quot;submit&quot;&gt;Войти&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p class=&quot;center-text&quot;&gt;Впервые на сайте? &lt;a href=&quot;{% url 'register' %}&quot;&gt;Зарегистрироваться&lt;/a&gt;&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Шаблон авторизации отображает форму для ввода имени пользователя и пароля. Если аутентификация не завершается успехом, выводится сообщение об ошибке «Неверный логин или пароль».</p>
+<h2 id="31">3.1. Просмотр всех конференций</h2>
+<pre><code class="language-python">def conference_list(request):
+    query = request.GET.get('q', '')
+
+    conferences = Conference.objects.all()
+    if query:
+        conferences = conferences.filter(
+            Q(title__icontains=query) |
+            Q(topics__icontains=query) |
+            Q(location__icontains=query) |
+            Q(description__icontains=query) |
+            Q(participation_conditions__icontains=query)
+        )
+
+    conferences = conferences.order_by('-created_at')
+
+    paginator = Paginator(conferences, settings.ITEMS_PER_PAGE)
+    page_number = request.GET.get('page', 1)
+
+    try:
+        conferences_page = paginator.page(page_number)
+    except PageNotAnInteger:
+        conferences_page = paginator.page(1)
+    except EmptyPage:
+        conferences_page = paginator.page(paginator.num_pages)
+
+    return render(request, 'conferences/conference_list.html', {
+        'conferences': conferences_page,
+        'paginator': paginator,
+        'page_obj': conferences_page,
+        'query': query
+    })
+</code></pre>
+<p>Шаблон</p>
+<pre><code class="language-html">{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Список конференций&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;{% static 'style.css' %}&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+    &lt;h1&gt;Список научных конференций&lt;/h1&gt;
+    {% if user.is_authenticated %}
+        &lt;p&gt;Вы вошли как {{ user.username }} | &lt;a href=&quot;{% url 'logout_redirect' %}&quot;&gt;Выйти&lt;/a&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;a href=&quot;{% url 'create_conference' %}&quot; class=&quot;btn&quot;&gt;Создать новое мероприятие&lt;/a&gt;&lt;/p&gt;
+    {% else %}
+        &lt;p&gt;&lt;a href=&quot;{% url 'login' %}&quot;&gt;Войти&lt;/a&gt; | &lt;a href=&quot;{% url 'register' %}&quot;&gt;Регистрация&lt;/a&gt;&lt;/p&gt;
+    {% endif %}
+&lt;/header&gt;
+
+&lt;section&gt;
+    &lt;form method=&quot;get&quot; action=&quot;{% url 'conference_list' %}&quot; class=&quot;search-form&quot;&gt;
+        &lt;input type=&quot;text&quot; name=&quot;q&quot; value=&quot;{{ query }}&quot; placeholder=&quot;Поиск по конференциям&quot;&gt;
+        &lt;button type=&quot;submit&quot; class=&quot;btn&quot;&gt;Поиск&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/section&gt;
+
+&lt;section&gt;
+    {% if conferences %}
+        &lt;ul&gt;
+            {% for conference in conferences %}
+                &lt;li&gt;
+                    &lt;h2&gt;{{ conference.title }}&lt;/h2&gt;
+                    &lt;p&gt;&lt;strong&gt;Тематика:&lt;/strong&gt; {{ conference.topics }}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Место:&lt;/strong&gt; {{ conference.location }}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Даты:&lt;/strong&gt; {{ conference.start_date }} - {{ conference.end_date }}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Описание:&lt;/strong&gt; {{ conference.description }}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Условия участия:&lt;/strong&gt; {{ conference.participation_conditions }}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Дата создания:&lt;/strong&gt; {{ conference.created_at|date:&quot;Y-m-d H:i&quot; }}&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Последнее изменение:&lt;/strong&gt; {{ conference.updated_at|date:&quot;Y-m-d H:i&quot; }}&lt;/p&gt;
+
+
+                    &lt;p&gt;&lt;a href=&quot;{% url 'conference_detail' conference.id %}&quot; class=&quot;btn-link&quot;&gt;Посмотреть подробности&lt;/a&gt;
+                    &lt;/p&gt;
+                    {% if user.is_authenticated %}
+                        {% if user != conference.owner %}
+                            {% if user in conference.participants.all %}
+                                {% if user in conference.ratings.all %}
+                                    &lt;p&gt;&lt;a href=&quot;{% url 'rate_conference' conference.id %}&quot; class=&quot;btn-link&quot;&gt;Изменить
+                                        оценку&lt;/a&gt;&lt;/p&gt;
+                                {% else %}
+                                    &lt;p&gt;&lt;a href=&quot;{% url 'rate_conference' conference.id %}&quot; class=&quot;btn-link&quot;&gt;Оценить&lt;/a&gt;
+                                    &lt;/p&gt;
+                                {% endif %}
+                                &lt;p&gt;&lt;a href=&quot;{% url 'cancel_registration' conference.id %}&quot; class=&quot;btn-link&quot;&gt;Отменить
+                                    регистрацию&lt;/a&gt;&lt;/p&gt;
+                            {% else %}
+                                &lt;p&gt;&lt;a href=&quot;{% url 'register_for_conference' conference.id %}&quot; class=&quot;btn-link&quot;&gt;Зарегистрироваться&lt;/a&gt;
+                                &lt;/p&gt;
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                &lt;/li&gt;
+            {% endfor %}
+        &lt;/ul&gt;
+
+        &lt;div class=&quot;pagination&quot;&gt;
+            {% if conferences.has_previous %}
+                &lt;a href=&quot;?q={{ query }}&amp;page={{ conferences.previous_page_number }}&quot; class=&quot;btn&quot;&gt;Предыдущая страница&lt;/a&gt;
+            {% else %}
+                &lt;span class=&quot;btn disabled&quot;&gt;Предыдущая страница&lt;/span&gt;
+            {% endif %}
+
+            &lt;span class=&quot;page-info&quot;&gt;
+                    Страница {{ conferences.number }} из {{ conferences.paginator.num_pages }}
+                &lt;/span&gt;
+
+            {% if conferences.has_next %}
+                &lt;a href=&quot;?q={{ query }}&amp;page={{ conferences.next_page_number }}&quot; class=&quot;btn&quot;&gt;Следующая страница&lt;/a&gt;
+            {% else %}
+                &lt;span class=&quot;btn disabled&quot;&gt;Следующая страница&lt;/span&gt;
+            {% endif %}
+        &lt;/div&gt;
+    {% else %}
+        &lt;p&gt;Конференции не найдены.&lt;/p&gt;
+    {% endif %}
+&lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>В представлении <code>conference_list</code> реализован поиск и пагинация. Сначала считывается поисковый запрос <code>q</code>, и, если он задан, выполняется фильтрация конференций по полям <code>title</code>, <code>topics</code>, <code>location</code>, <code>description</code> и <code>participation_conditions</code>. Затем конференции сортируются по полю <code>created_at</code> в порядке убывания.</p>
+<p>Пагинация применяется к отфильтрованному списку конференций, используя значение <code>ITEMS_PER_PAGE</code> из настроек. Если запрос страницы (<code>page</code>) не является числом или превышает количество страниц, выбирается первая или последняя доступная страница. </p>
+<p>Шаблон отображает список конференций с полями, а также данными о входе в аккаунт сверху. Внизу добавлены элементы управления пагинацией, которые сохраняют поисковый запрос и переходят между страницами с учетом текущего фильтра.</p>
+<h2 id="32">3.2. Просмотр конференции, редактирование, удаление</h2>
+<pre><code class="language-python">def conference_detail(request, conference_id):
+    conference = get_object_or_404(Conference, id=conference_id)
+    user_rating = None
+    if request.user.is_authenticated:
+        user_rating = ConferenceRating.objects.filter(user=request.user, conference=conference).first()
+
+    return render(request, 'conferences/conference_detail.html', {
+        'conference': conference,
+        'user_rating': user_rating,
+    })
+
+
+@login_required
+def view_participants(request, conference_id):
+    conference = get_object_or_404(Conference, id=conference_id, owner=request.user)
+    participants = conference.participants.all()
+
+    return render(request, 'conferences/view_participants.html',
+                  {'conference': conference, 'participants': participants})
+
+
+@login_required
+def create_conference(request):
+    if request.method == &quot;POST&quot;:
+        form = ConferenceForm(request.POST)
+        if form.is_valid():
+            conference = form.save(commit=False)
+            conference.owner = request.user
+            conference.save()
+            return redirect('conference_list')
+    else:
+        form = ConferenceForm()
+    return render(request, 'conferences/create_conference.html', {'form': form})
+
+
+@login_required
+def edit_conference(request, conference_id):
+    conference = get_object_or_404(Conference, id=conference_id)
+
+    if conference.owner != request.user:
+        return redirect('conference_detail', conference_id=conference.id)
+
+    if request.method == &quot;POST&quot;:
+        form = ConferenceForm(request.POST, instance=conference)
+        if form.is_valid():
+            form.save()
+            return redirect('conference_detail', conference_id=conference.id)
+    else:
+        form = ConferenceForm(instance=conference)
+
+    return render(request, 'conferences/edit_conference.html', {'form': form, 'conference': conference})
+</code></pre>
+<p>В представлении <code>conference_detail</code> отображаются подробности конференции, а для авторизованных пользователей загружается их оценка конференции, если она есть. </p>
+<p>В представлении <code>create_conference</code> создается новая конференция. Если метод запроса <code>POST</code>, форма сохраняется с текущим пользователем как владельцем. При <code>GET</code>-запросе отображается пустая форма для создания конференции.</p>
+<p>Представление <code>edit_conference</code> позволяет владельцу конференции редактировать её данные. Если метод запроса <code>POST</code>, данные сохраняются, а при <code>GET</code> отображается текущая информация о конференции для редактирования.</p>
+<p>Представление <code>view_participants</code> проверяет, что текущий пользователь — владелец конференции, и отображает список участников для данной конференции.</p>
+<h2 id="4">4. Оставить отзыв на конференцию</h2>
+<pre><code class="language-python">@login_required
+def rate_conference(request, conference_id):
+    conference = get_object_or_404(Conference, id=conference_id)
+
+    if request.user not in conference.participants.all():
+        return redirect('conference_detail', conference_id=conference.id)
+
+    rating = ConferenceRating.objects.filter(user=request.user, conference=conference).first()
+    created = rating is None
+
+    if request.method == &quot;POST&quot;:
+        form = ConferenceRatingForm(request.POST, instance=rating)
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.user = request.user
+            rating.conference = conference
+            rating.save()
+            return redirect('conference_detail', conference_id=conference.id)
+    else:
+        form = ConferenceRatingForm(instance=rating)
+
+    return render(request, 'conferences/rate_conference.html',
+                  {'form': form, 'conference': conference, 'created': created})
+
+
+@login_required
+def view_ratings(request, conference_id):
+    conference = get_object_or_404(Conference, id=conference_id, owner=request.user)
+    ratings = ConferenceRating.objects.filter(conference=conference)
+
+    return render(request, 'conferences/view_ratings.html', {'conference': conference, 'ratings': ratings})
+</code></pre>
+<p>В представлении <code>rate_conference</code> реализована возможность добавления и изменения оценки конференции для участников. Если пользователь не является участником конференции, он перенаправляется на страницу с подробной информацией о конференции. При получении <code>POST</code>-запроса данные формы сохраняются, связываясь с текущим пользователем и конференцией. Если форма загружается через <code>GET</code>, отображается существующая оценка, если она уже была добавлена.</p>
+<p>В представлении <code>view_ratings</code> проверяется, что текущий пользователь является владельцем конференции, после чего загружаются и отображаются все оценки участников для данной конференции.</p>
+<p>Шаблон оценки</p>
+<pre><code class="language-html">{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;{% if created %}Оценить{% else %}Изменить оценку{% endif %} конференцию&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;{% static 'style.css' %}&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;{% if created %}Оценить{% else %}Изменить оценку{% endif %} конференцию &quot;{{ conference.title }}&quot;&lt;/h1&gt;
+    &lt;/header&gt;
+
+    &lt;section&gt;
+        &lt;form method=&quot;post&quot;&gt;
+            {% csrf_token %}
+            {{ form.as_p }}
+            &lt;button type=&quot;submit&quot;&gt;{% if created %}Оценить{% else %}Сохранить изменения{% endif %}&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p&gt;&lt;a href=&quot;{% url 'conference_detail' conference.id %}&quot; class=&quot;btn-link&quot;&gt;Вернуться к конференции&lt;/a&gt;&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Шаблон оценки позволяет участникам добавить или изменить оценку конференции. Кнопка меняет текст на «Оценить» при создании новой оценки и на «Сохранить изменения» при редактировании.</p>
+<h2 id="5">5. Администратор должен иметь возможность указания результатов выступления</h2>
+<p>Если пользователь имеет статус суперпользователя, то ему открывается доступ к админ панели, где он может отметить конференцию как рекомендованную к публикации.</p>
+<h2 id="6">6. В клиентской части должна формироваться таблица, отображающая всех участников по конференциям</h2>
+<pre><code class="language-python">@login_required
+def view_participants(request, conference_id):
+    conference = get_object_or_404(Conference, id=conference_id, owner=request.user)
+    participants = conference.participants.all()
+
+    return render(request, 'conferences/view_participants.html',
+                  {'conference': conference, 'participants': participants})
+</code></pre>
+<p>В <code>view_participants</code> загружается конференция, проверяя, что текущий пользователь является её владельцем. Если проверка пройдена, загружается список участников конференции, который затем передается в шаблон <code>view_participants.html</code> для отображения.</p>
+<pre><code class="language-html">{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Участники конференции&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;{% static 'style.css' %}&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Участники конференции &quot;{{ conference.title }}&quot;&lt;/h1&gt;
+    &lt;/header&gt;
+
+    &lt;section&gt;
+        {% if participants %}
+            &lt;ul&gt;
+                {% for participant in participants %}
+                    &lt;li&gt;{{ participant.username }}&lt;/li&gt;
+                {% endfor %}
+            &lt;/ul&gt;
+        {% else %}
+            &lt;p&gt;Пока нет зарегистрированных участников.&lt;/p&gt;
+        {% endif %}
+        &lt;p&gt;&lt;a href=&quot;{% url 'conference_detail' conference.id %}&quot; class=&quot;btn-link&quot;&gt;Вернуться к конференции&lt;/a&gt;&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Шаблон отображает список участников конференции. Если есть зарегистрированные участники, они выводятся списком с именами пользователей. Если участников нет, отображается сообщение об отсутствии зарегистрированных. Внизу страницы добавлена ссылка для возврата на страницу с подробной информацией о конференции.</p></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = ".."</script>
+    
+    <script src="../js/base.js"></script>
+    <script src="../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>
