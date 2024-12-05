@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+    
+    <title>Клиенты, проживавшие в те же дни - Web-программирование</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../../css/base.min.css" rel="stylesheet">
+    <link href="../../../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="../../..">Web-программирование</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../../..">Главная</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Лабораторные работы <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../../lab1/">Лабораторная работа 1</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../../lab2/">Лабораторная работа 2</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../intro/">Лабораторная работа 3</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#_1">Клиенты, проживавшие в те же дни</a></li>
+            <li class="second-level"><a href="#_2">Описание</a></li>
+                
+            <li class="second-level"><a href="#url">URL</a></li>
+                
+            <li class="second-level"><a href="#_3">Параметры запроса</a></li>
+                
+            <li class="second-level"><a href="#_4">Пример запроса</a></li>
+                
+            <li class="second-level"><a href="#200">Успешный ответ (200)</a></li>
+                
+                <li class="third-level"><a href="#_5">Поля ответа</a></li>
+            <li class="second-level"><a href="#_6">Ошибки</a></li>
+                
+                <li class="third-level"><a href="#422">Неверный запрос (422)</a></li>
+                <li class="third-level"><a href="#404">Клиент не найден (404)</a></li>
+                <li class="third-level"><a href="#404_1">Пересечения не найдены (404)</a></li>
+            <li class="second-level"><a href="#_7">Примечания</a></li>
+                
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="_1">Клиенты, проживавшие в те же дни</h1>
+<h3 id="_2">Описание</h3>
+<p>Этот эндпоинт возвращает список клиентов, проживавших в гостинице в те же дни, что и указанный клиент, в определённый период времени.</p>
+<hr />
+<h3 id="url">URL</h3>
+<p><code>GET /clients/stay-overlap</code></p>
+<hr />
+<h3 id="_3">Параметры запроса</h3>
+<p>Эндпоинт принимает параметры в строке запроса (<code>query parameters</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Тип данных</th>
+<th>Обязательный</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>client_id</code></td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>ID клиента, для которого ищутся пересечения проживания.</td>
+</tr>
+<tr>
+<td><code>start_date</code></td>
+<td><code>string</code></td>
+<td>Нет</td>
+<td>Дата начала периода (формат <code>YYYY-MM-DD</code>).</td>
+</tr>
+<tr>
+<td><code>end_date</code></td>
+<td><code>string</code></td>
+<td>Нет</td>
+<td>Дата окончания периода (формат <code>YYYY-MM-DD</code>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_4">Пример запроса</h3>
+<pre><code class="language-http">GET /clients/stay-overlap?client_id=1&amp;start_date=2024-01-01&amp;end_date=2024-01-10
+</code></pre>
+<hr />
+<h3 id="200">Успешный ответ (200)</h3>
+<pre><code class="language-json">{
+    &quot;count&quot;: 2,
+    &quot;clients&quot;: [
+        {
+            &quot;id&quot;: 2,
+            &quot;passport_number&quot;: &quot;0987654321&quot;,
+            &quot;first_name&quot;: &quot;Анна&quot;,
+            &quot;last_name&quot;: &quot;Смирнова&quot;,
+            &quot;middle_name&quot;: null,
+            &quot;city_from&quot;: &quot;Москва&quot;
+        },
+        {
+            &quot;id&quot;: 3,
+            &quot;passport_number&quot;: &quot;5678901234&quot;,
+            &quot;first_name&quot;: &quot;Иван&quot;,
+            &quot;last_name&quot;: &quot;Кузнецов&quot;,
+            &quot;middle_name&quot;: &quot;Петрович&quot;,
+            &quot;city_from&quot;: &quot;Санкт-Петербург&quot;
+        }
+    ]
+}
+</code></pre>
+<h4 id="_5">Поля ответа</h4>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип данных</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>count</code></td>
+<td><code>integer</code></td>
+<td>Общее количество найденных клиентов.</td>
+</tr>
+<tr>
+<td><code>clients</code></td>
+<td><code>array</code></td>
+<td>Список клиентов, чье проживание пересекалось с указанным.</td>
+</tr>
+<tr>
+<td><code>clients.id</code></td>
+<td><code>integer</code></td>
+<td>ID клиента.</td>
+</tr>
+<tr>
+<td><code>clients.passport_number</code></td>
+<td><code>string</code></td>
+<td>Номер паспорта клиента.</td>
+</tr>
+<tr>
+<td><code>clients.first_name</code></td>
+<td><code>string</code></td>
+<td>Имя клиента.</td>
+</tr>
+<tr>
+<td><code>clients.last_name</code></td>
+<td><code>string</code></td>
+<td>Фамилия клиента.</td>
+</tr>
+<tr>
+<td><code>clients.middle_name</code></td>
+<td><code>string/null</code></td>
+<td>Отчество клиента, если указано.</td>
+</tr>
+<tr>
+<td><code>clients.city_from</code></td>
+<td><code>string</code></td>
+<td>Город, из которого прибыл клиент.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_6">Ошибки</h3>
+<h4 id="422">Неверный запрос (422)</h4>
+<p>Пример ответа:</p>
+<pre><code class="language-json">{
+    &quot;detail&quot;: &quot;Дата окончания не может быть раньше даты начала.&quot;
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Код</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>422</td>
+<td>Некорректные данные, например, дата окончания раньше даты начала.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="404">Клиент не найден (404)</h4>
+<p>Пример ответа:</p>
+<pre><code class="language-json">{
+    &quot;detail&quot;: &quot;Клиент с id 1 не найден.&quot;
+}
+</code></pre>
+<h4 id="404_1">Пересечения не найдены (404)</h4>
+<p>Пример ответа:</p>
+<pre><code class="language-json">{
+    &quot;detail&quot;: &quot;Не найдено клиентов, проживавших в те же дни, что и указанный клиент.&quot;
+}
+</code></pre>
+<hr />
+<h3 id="_7">Примечания</h3>
+<ul>
+<li>Параметр <code>client_id</code> обязателен. Если он не указан или клиент с этим ID не найден, запрос завершится ошибкой.</li>
+<li>Параметры <code>start_date</code> и <code>end_date</code> не обязательны. Если они не указаны, поиск ведется по всем датам проживания указанного клиента.</li>
+<li>Дата окончания (<code>end_date</code>) не может быть раньше даты начала (<code>start_date</code>).</li>
+<li>Если ни один клиент не найден, пересекающийся с указанным, будет возвращен код ответа <code>404</code> с соответствующим сообщением.</li>
+</ul></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../../../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = "../../.."</script>
+    
+    <script src="../../../js/base.js"></script>
+    <script src="../../../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>

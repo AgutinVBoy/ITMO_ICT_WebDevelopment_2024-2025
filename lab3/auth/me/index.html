@@ -8,10 +8,10 @@
     
     
     
-    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="shortcut icon" href="../../../img/favicon.ico">
 
     
-    <title>Главная - Web-программирование</title>
+    <title>Информация о текущем пользователе - Web-программирование</title>
     
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -19,9 +19,9 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
     <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-    <link href="css/bootstrap-custom.min.css" rel="stylesheet">
-    <link href="css/base.min.css" rel="stylesheet">
-    <link href="css/cinder.min.css" rel="stylesheet">
+    <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../../css/base.min.css" rel="stylesheet">
+    <link href="../../../css/cinder.min.css" rel="stylesheet">
 
     
         
@@ -40,7 +40,7 @@
      
 </head>
 
-<body class="homepage" >
+<body>
 
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -59,7 +59,7 @@
             <!-- Main title -->
 
             
-              <a class="navbar-brand" href=".">Web-программирование</a>
+              <a class="navbar-brand" href="../../..">Web-программирование</a>
             
         </div>
 
@@ -69,8 +69,8 @@
                 <ul class="nav navbar-nav">
                 
                 
-                    <li class="active">
-                        <a href=".">Главная</a>
+                    <li >
+                        <a href="../../..">Главная</a>
                     </li>
                 
                 
@@ -81,19 +81,19 @@
                         
                             
 <li >
-    <a href="lab1/">Лабораторная работа 1</a>
+    <a href="../../../lab1/">Лабораторная работа 1</a>
 </li>
 
                         
                             
 <li >
-    <a href="lab2/">Лабораторная работа 2</a>
+    <a href="../../../lab2/">Лабораторная работа 2</a>
 </li>
 
                         
                             
 <li >
-    <a href="lab3/intro/">Лабораторная работа 3</a>
+    <a href="../../intro/">Лабораторная работа 3</a>
 </li>
 
                         
@@ -109,16 +109,6 @@
                             <i class="fas fa-search"></i> Search
                         </a>
                     </li>
-                    <li class="disabled">
-                        <a rel="prev" >
-                            <i class="fas fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li >
-                        <a rel="next" href="lab1/">
-                            Next <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </li>
             </ul>
         </div>
     </div>
@@ -129,21 +119,120 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#k3341-web-22">Пиотуховский Александр Андреевич K3341 WEB 2.2</a></li>
-            <li class="second-level"><a href="#_1">Лабораторные работы</a></li>
+        <li class="first-level active"><a href="#_1">Информация о текущем пользователе</a></li>
+            <li class="second-level"><a href="#_2">Описание</a></li>
+                
+            <li class="second-level"><a href="#url">URL</a></li>
+                
+            <li class="second-level"><a href="#_3">Заголовки запроса</a></li>
+                
+            <li class="second-level"><a href="#_4">Пример запроса</a></li>
+                
+            <li class="second-level"><a href="#200">Успешный ответ (200)</a></li>
+                
+                <li class="third-level"><a href="#_5">Поля ответа</a></li>
+            <li class="second-level"><a href="#_6">Ошибки</a></li>
+                
+                <li class="third-level"><a href="#401">Неавторизованный доступ (401)</a></li>
+            <li class="second-level"><a href="#_7">Примечания</a></li>
                 
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="k3341-web-22">Пиотуховский Александр Андреевич K3341 WEB 2.2</h1>
+<h1 id="_1">Информация о текущем пользователе</h1>
+<h3 id="_2">Описание</h3>
+<p>Этот эндпоинт возвращает информацию о текущем авторизованном пользователе. Пользователь должен быть аутентифицирован с помощью токена, переданного в заголовке запроса.</p>
 <hr />
-<h2 id="_1"><strong>Лабораторные работы</strong></h2>
-<ol>
-<li><a href="lab1">Лабораторная работа 1. Работа с сокетами.</a></li>
-<li><a href="lab2">Лабораторная работа 2. Реализация простого сайта на django. Вариант 5 (Список научных конференций).</a></li>
-<li><a href="lab3/intro">Лабораторная работа 3. Реализация серверной части на django rest. Документирование API.</a></li>
-</ol></div>
+<h3 id="url">URL</h3>
+<p><code>GET /auth/users/me/</code></p>
+<hr />
+<h3 id="_3">Заголовки запроса</h3>
+<table>
+<thead>
+<tr>
+<th>Заголовок</th>
+<th>Тип данных</th>
+<th>Обязательный</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Authorization</code></td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>Токен авторизации в формате <code>Token &lt;auth_token&gt;</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_4">Пример запроса</h3>
+<pre><code class="language-http">GET /auth/users/me/
+Authorization: Token 350129fa57debf278e396c2b2c5c80503c80cdc9
+</code></pre>
+<hr />
+<h3 id="200">Успешный ответ (200)</h3>
+<pre><code class="language-json">{
+    &quot;email&quot;: &quot;john_doe@example.com&quot;,
+    &quot;id&quot;: 2,
+    &quot;username&quot;: &quot;john_doe&quot;
+}
+</code></pre>
+<h4 id="_5">Поля ответа</h4>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип данных</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>email</code></td>
+<td><code>string</code></td>
+<td>Электронная почта пользователя.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>integer</code></td>
+<td>Уникальный идентификатор пользователя.</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td><code>string</code></td>
+<td>Имя пользователя.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_6">Ошибки</h3>
+<h4 id="401">Неавторизованный доступ (401)</h4>
+<p>Пример ответа:</p>
+<pre><code class="language-json">{
+    &quot;detail&quot;: &quot;Учетные данные не были предоставлены.&quot;
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Код</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401</td>
+<td>Запрос выполнен без заголовка авторизации или с недействительным токеном.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_7">Примечания</h3>
+<ul>
+<li>Эндпоинт предназначен для получения только информации о текущем пользователе. Чтобы получить информацию о других пользователях, требуется доступ администратора.</li>
+</ul></div>
         
         
     </div>
@@ -163,7 +252,7 @@
       </footer>
     
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../../js/bootstrap-3.0.3.min.js"></script>
 
     
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
@@ -171,10 +260,10 @@
     <script>hljs.initHighlightingOnLoad();</script>
     
 
-    <script>var base_url = "."</script>
+    <script>var base_url = "../../.."</script>
     
-    <script src="js/base.js"></script>
-    <script src="search/main.js"></script>
+    <script src="../../../js/base.js"></script>
+    <script src="../../../search/main.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -245,8 +334,3 @@
     </body>
 
 </html>
-
-<!--
-MkDocs version : 1.6.1
-Build Date UTC : 2024-12-05 07:13:07.320076+00:00
--->
