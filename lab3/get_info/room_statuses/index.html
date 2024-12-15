@@ -181,19 +181,29 @@
             &quot;number&quot;: 101,
             &quot;type_id&quot;: 1,
             &quot;type_name&quot;: &quot;Одноместный&quot;,
-            &quot;phone&quot;: &quot;1234567890&quot;
+            &quot;phone&quot;: &quot;1234567890&quot;,
+            &quot;current_client&quot;: {
+                &quot;id&quot;: 1,
+                &quot;passport_number&quot;: &quot;1234567890&quot;,
+                &quot;first_name&quot;: &quot;Иван&quot;,
+                &quot;last_name&quot;: &quot;Иванов&quot;,
+                &quot;middle_name&quot;: &quot;Сергеевич&quot;,
+                &quot;city_from&quot;: &quot;Москва&quot;
+            }
         },
         {
             &quot;number&quot;: 102,
             &quot;type_id&quot;: 1,
             &quot;type_name&quot;: &quot;Одноместный&quot;,
-            &quot;phone&quot;: &quot;1234567891&quot;
+            &quot;phone&quot;: &quot;1234567891&quot;,
+            &quot;current_client&quot;: null
         },
         {
             &quot;number&quot;: 201,
             &quot;type_id&quot;: 2,
             &quot;type_name&quot;: &quot;Двухместный&quot;,
-            &quot;phone&quot;: &quot;1234567892&quot;
+            &quot;phone&quot;: &quot;1234567892&quot;,
+            &quot;current_client&quot;: null
         }
     ]
 }
@@ -237,6 +247,41 @@
 <td><code>rooms.phone</code></td>
 <td><code>string</code></td>
 <td>Телефонный номер, закрепленный за комнатой.</td>
+</tr>
+<tr>
+<td><code>rooms.current_client</code></td>
+<td><code>object/null</code></td>
+<td>Данные о клиенте, проживающим в номере.</td>
+</tr>
+<tr>
+<td><code>rooms.current_client.id</code></td>
+<td><code>integer</code></td>
+<td>ID клиента.</td>
+</tr>
+<tr>
+<td><code>rooms.current_client.passport_number</code></td>
+<td><code>string</code></td>
+<td>Номер паспорта клиента.</td>
+</tr>
+<tr>
+<td><code>rooms.current_client.first_name</code></td>
+<td><code>string</code></td>
+<td>Имя клиента.</td>
+</tr>
+<tr>
+<td><code>rooms.current_client.last_name</code></td>
+<td><code>string</code></td>
+<td>Фамилия клиента.</td>
+</tr>
+<tr>
+<td><code>rooms.current_client.middle_name</code></td>
+<td><code>string/null</code></td>
+<td>Отчество клиента, если указано.</td>
+</tr>
+<tr>
+<td><code>rooms.current_client.city_from</code></td>
+<td><code>string</code></td>
+<td>Город, из которого прибыл клиент.</td>
 </tr>
 </tbody>
 </table>
