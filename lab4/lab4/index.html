@@ -171,6 +171,127 @@
 <h3 id="_4">Аутентификация</h3>
 <p>Вход<br />
 <img alt="" src="../assets/img.png" />  </p>
+<p>Код сниппет входа</p>
+<pre><code class="language-html">&lt;div class=&quot;container&quot;&gt;
+  &lt;h1&gt;Авторизация&lt;/h1&gt;
+  &lt;form #loginForm=&quot;ngForm&quot; (ngSubmit)=&quot;login()&quot; novalidate&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label for=&quot;username&quot;&gt;Имя пользователя&lt;/label&gt;
+      &lt;input
+        id=&quot;username&quot;
+        class=&quot;form-control&quot;
+        [(ngModel)]=&quot;credentials.username&quot;
+        name=&quot;username&quot;
+        required
+        #username=&quot;ngModel&quot;
+      /&gt;
+      &lt;div *ngIf=&quot;username.invalid &amp;&amp; username.touched&quot; class=&quot;text-danger&quot;&gt;
+        Имя пользователя обязательно
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label for=&quot;password&quot;&gt;Пароль&lt;/label&gt;
+      &lt;input
+        id=&quot;password&quot;
+        type=&quot;password&quot;
+        class=&quot;form-control&quot;
+        [(ngModel)]=&quot;credentials.password&quot;
+        name=&quot;password&quot;
+        required
+        #password=&quot;ngModel&quot;
+      /&gt;
+      &lt;div *ngIf=&quot;password.invalid &amp;&amp; password.touched&quot; class=&quot;text-danger&quot;&gt;
+        Пароль обязателен
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Кнопка отправки --&gt;
+    &lt;button
+      type=&quot;submit&quot;
+      class=&quot;btn btn-primary&quot;
+      [disabled]=&quot;loginForm.invalid || isSubmitting&quot;
+    &gt;
+      &lt;span *ngIf=&quot;isSubmitting&quot;&gt;Вход...&lt;/span&gt;
+      &lt;span *ngIf=&quot;!isSubmitting&quot;&gt;Войти&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;!-- Сообщение об ошибке --&gt;
+  &lt;div *ngIf=&quot;errorMessage&quot; class=&quot;text-danger mt-3&quot;&gt;
+    {{ errorMessage }}
+  &lt;/div&gt;
+
+  &lt;div class=&quot;mt-3&quot;&gt;
+    &lt;p&gt;
+      Нет аккаунта?
+      &lt;button class=&quot;btn btn-link&quot; (click)=&quot;goToRegister()&quot;&gt;Зарегистрироваться!&lt;/button&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Логика:  </p>
+<pre><code class="language-typescript">import {Component} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {environment} from '../../environment';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  imports: [FormsModule, CommonModule],
+})
+export class LoginComponent {
+  credentials = {username: '', password: ''};
+  errorMessage: string | null = null;
+  isSubmitting = false;
+
+  constructor(private http: HttpClient, private router: Router) {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      this.router.navigate(['/']);
+    }
+  }
+
+
+  login() {
+    this.errorMessage = null;
+    this.isSubmitting = true;
+
+    this.http.post&lt;{ auth_token: string }&gt;(`${environment.apiUrl}/auth/token/login/`, this.credentials).subscribe({
+      next: (response) =&gt; {
+        localStorage.setItem('auth_token', response.auth_token);
+
+        this.http
+          .get(`${environment.apiUrl}/auth/users/me/`)
+          .subscribe((userData: any) =&gt; {
+            localStorage.setItem('first_name', userData.first_name);
+            localStorage.setItem('last_name', userData.last_name);
+            localStorage.setItem('username', userData.username);
+            localStorage.setItem('email', userData.email);
+          });
+        this.isSubmitting = false;
+        this.router.navigate(['/']);
+      },
+      error: (err) =&gt; {
+        this.isSubmitting = false;
+        if (err.status === 400 &amp;&amp; err.error?.non_field_errors) {
+          this.errorMessage = err.error.non_field_errors[0];
+        } else {
+          this.errorMessage = 'Произошла ошибка. Попробуйте ещё раз.';
+        }
+      },
+    });
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+}
+</code></pre>
 <p>Регистрация<br />
 <img alt="" src="../assets/img_1.png" />  </p>
 <hr />
@@ -210,7 +331,7 @@
 <hr />
 <h3 id="_10">Страница с отчётами</h3>
 <p>Общий вид<br />
-<img alt="" src="../assets/img_16.png" />  </p></div>
+<img alt="" src="../assets/img_16.png" /></p></div>
         
         
     </div>
